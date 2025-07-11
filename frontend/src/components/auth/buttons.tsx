@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import {useAlert} from '../../context/AlertContext';
+import axios from "axios";
 
 
 // export const PopupGoogleSigninButton = () => {
@@ -34,51 +35,57 @@ import {useAlert} from '../../context/AlertContext';
 
 
 interface SignUpError {
+    name?:string,
     email?:string,
     password?:string,
     other?:string,
 }
 
 interface SignUpButtonProps {
+    name:string,
     email:string,
     password:string,
     setError:(value:SignUpError)=>void,
 }
 
-// export const SignUpButton : React.FC<SignUpButtonProps> = ({email, password, setError}) => {
-//     const navigate = useNavigate();
-//     const handleSignUpButton = () => {
-//         createUserWithEmailAndPassword(auth, email, password)
-//             .then(() => {
-//                 navigate('/auth/signup/sendEmail');
-//             })
-//             .catch((error) => {
-//                 const errorCode = error.code;
-//                 if (errorCode === 'auth/invalid-email') {
-//                     setError({ email: 'メールアドレスの形式が違います' });
-//                 } else if (errorCode === 'auth/user-not-found') {
-//                     setError({ email: 'このメールアドレスは登録されていません' });
-//                 } else if (errorCode === 'auth/wrong-password') {
-//                     setError({ password: 'パスワードが正しくありません' });
-//                 } else if (errorCode === 'auth/email-already-in-use') {
-//                     setError({ email: 'このメールアドレスは既に使用されています' });
-//                 } else if (errorCode === 'auth/missing-email') {
-//                     setError({ email: 'メールアドレスを入力してください' });
-//                 } else if (errorCode === 'auth/missing-password') {
-//                     setError({ password: 'パスワードを入力してください' });
-//                 } else if (errorCode === 'auth/weak-password') {
-//                     setError({ password: 'パスワードが簡単すぎます' });
-//                 } else {
-//                     setError({ other: 'エラーが発生しました。再度お試しください。' });
-//                 }
-//             })
-//     }
+export const SignUpButton : React.FC<SignUpButtonProps> = ({name, email, password, setError}) => {
+    const navigate = useNavigate();
+    const handleSignUpButton = async () => {
+        await axios.post("/api/users", {
+            name:name,
+            email:email,
+            password:password
+            })
+            .then(() => {
+                navigate('/auth/signup/sendEmail');
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                if (errorCode === 'auth/invalid-email') {
+                    setError({ email: 'メールアドレスの形式が違います' });
+                } else if (errorCode === 'auth/user-not-found') {
+                    setError({ email: 'このメールアドレスは登録されていません' });
+                } else if (errorCode === 'auth/wrong-password') {
+                    setError({ password: 'パスワードが正しくありません' });
+                } else if (errorCode === 'auth/email-already-in-use') {
+                    setError({ email: 'このメールアドレスは既に使用されています' });
+                } else if (errorCode === 'auth/missing-email') {
+                    setError({ email: 'メールアドレスを入力してください' });
+                } else if (errorCode === 'auth/missing-password') {
+                    setError({ password: 'パスワードを入力してください' });
+                } else if (errorCode === 'auth/weak-password') {
+                    setError({ password: 'パスワードが簡単すぎます' });
+                } else {
+                    setError({ other: 'エラーが発生しました。再度お試しください。' });
+                }
+            })
+    }
 
-//     return (
-//         <Button variant="contained" onClick={handleSignUpButton}>メールアドレスで続行</Button>
-//     )
+    return (
+        <Button variant="contained" onClick={handleSignUpButton}>メールアドレスで続行</Button>
+    )
 
-// }
+}
 
 type SignInError = {
     email?:string,

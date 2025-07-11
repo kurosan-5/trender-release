@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-// import { SignUpButton } from './buttons';
+import { SignUpButton } from './buttons';
 
 export default function SignUpPage() {
+  const [nameText, setNameText] = useState('');
   const [emailText, setEmailText] = useState('');
   const [passwordText, setPasswordText] = useState('');
   const [error, setError] = useState<{ email?: string; password?: string; other?: string }>({});
   const navigate = useNavigate();
 
+  const onChangeNameText = (value: string) => setNameText(value);
   const onChangeEmailText = (value: string) => setEmailText(value);
   const onChangePasswordText = (value: string) => setPasswordText(value);
 
@@ -33,6 +35,15 @@ export default function SignUpPage() {
       )}
 
       <TextField
+        label="ユーザー名を入力"
+        value={nameText}
+        onChange={(e) => onChangeNameText(e.target.value)}
+        error={error?.email !== undefined}
+        helperText={error?.email}
+        sx={{ width: 250 }}
+      />
+
+      <TextField
         label="メールアドレスを入力"
         value={emailText}
         onChange={(e) => onChangeEmailText(e.target.value)}
@@ -51,7 +62,7 @@ export default function SignUpPage() {
         sx={{ width: 250 }}
       />
 
-      {/* <SignUpButton email={emailText} password={passwordText} setError={setError} /> */}
+      <SignUpButton name={nameText} email={emailText} password={passwordText} setError={setError} />
 
       <Button
         variant="text"

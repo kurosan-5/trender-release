@@ -4,7 +4,7 @@ import Welcome from './components/welcome/Welcome';
 import Auth from './components/auth/Auth';
 import SignUpPage from './components/auth/Signup';
 import SignIn from './components/auth/Signin';
-import { ResetPassword } from './components/auth/ResetPass';
+// import { ResetPassword } from './components/auth/ResetPass';
 // import { SendEmail } from './components/auth/SendEmail';
 import { AlertProvider } from './context/AlertContext';
 import ShowAlert from './components/ShowAlert';
